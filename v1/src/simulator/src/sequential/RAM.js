@@ -162,7 +162,8 @@ export default class RAM extends CircuitElement {
             this.coreDump.value !== undefined
         )
     }
-
+    // Read-during-write behavior:
+    // If WRITE=1 and address matches, output value is implementation-defined.
     resolve() {
         if (this.write.value == 1) {
             this.data[this.address.value] = this.dataIn.value
@@ -329,7 +330,7 @@ export default class RAM extends CircuitElement {
         assign dout = mem[addr];
     
         always @ (*) begin
-        if (!we)
+        if (we)
             mem[addr] = din;
         end
     endmodule
